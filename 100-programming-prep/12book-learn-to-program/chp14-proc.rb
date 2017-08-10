@@ -43,12 +43,15 @@
 
 # # Program Logger
 
-def log block_description, &block
-  puts "Beginning \"#{block_description}\"..."
-  block_return = block.call
-  puts "...\"#{block_description}\" finished, returning:"
-end
+# def log block_description, &block
+#   puts "Beginning \"#{block_description}\"..."
+#   block_return = block.call
+#   puts "...\"#{block_description}\" finished, returning: #{block_return}"
+# end
 
-log "outer block" do
+# log "outer block" do
+#   '0' == 0
+# end
 
-end
+# # Better Program Logger
+
