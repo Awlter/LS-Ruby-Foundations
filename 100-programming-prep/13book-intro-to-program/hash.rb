@@ -27,19 +27,22 @@
 
 # # 6 Anagram
 
-words =  ['demo', 'none', 'tied', 'evil', 'dome', 'mode', 'live',
-          'fowl', 'veil', 'wolf', 'diet', 'vile', 'edit', 'tide',
-          'flow', 'neon']
-anagram = {}
+# words =  ['demo', 'none', 'tied', 'evil', 'dome', 'mode', 'live',
+#           'fowl', 'veil', 'wolf', 'diet', 'vile', 'edit', 'tide',
+#           'flow', 'neon']
+# anagram = {}
 
-words.each do |word|
-  sorted = word.split('').sort
+# words.each do |word|
+#   sorted = word.split('').sort
 
-  if anagram.has_key?(sorted)
-    anagram[sorted].push(word)
-  else
-    anagram[sorted] = [word]
-  end
-end
+#   if anagram.has_key?(sorted)
+#     anagram[sorted].push(word)
+#   else
+#     anagram[sorted] = [word]
+#   end
+# end
 
-p anagram.values.select {|words| words.length > 1}
+# p anagram.values.select {|words| words.length > 1}
+
+# # 7
+
