@@ -1,8 +1,41 @@
-# Build a command line calculator program that does the following:
+require 'pry'
 
-# asks for two numbers
-# asks for the type of operation to perform: add, subtract, multiply or divide
-# displays the result
+def acquire_operation
+  puts 'Type in the operation you want.(add, subtract, multiply or divide)'
 
-# Use the Kernel.gets() method to retrieve user input, and use Kernel.puts() method to display output. Remember that Kernel.gets() includes the newline, so you have to call chomp() to remove it: Kernel.gets().chomp().
+  operation = ''
+  loop do
+    operation = gets.chomp
 
+    break if ['add', 'subtract', 'multiply', 'divide'].include? operation
+    puts 'Must type in add, subtract, multiply, divide'
+  end
+end
+
+def acquire_input
+  binding.pry
+
+  puts 'Type in two numbers you want to calculate. Separated by comma'
+  gets.chomp.split(',').map(&:to_f)
+end
+
+def calculator
+  user_input = acquire_input
+
+  operation = acquire_operation
+
+  result =  case operation
+            when 'add'
+              user_input[0] + user_input[1]
+            when 'subtract'
+              user_input[0] - user_input[1]
+            when 'multiply'
+              user_input[0] * user_input[1]
+            when 'divide'
+              user_input[0] / user_input[1]
+            end
+
+  puts result
+end
+
+Kernel.calculator
