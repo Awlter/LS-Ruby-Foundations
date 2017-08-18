@@ -32,8 +32,13 @@ def promp(msg)
   puts "=> #{msg}."
 end
 
+def joiner(brd, delimiter = ', ', ending = 'or')
+  available_places = empty_places(brd)
+  "#{available_places[0..-2].join(delimiter)}#{delimiter}#{ending} #{available_places[-1]}"
+end
+
 def player_make_choice(brd)
-  promp('Take an empty place to mark the board. (e.g "3")')
+  promp("Choose a position to place a piece: #{joiner(brd)}")
   choice = ''
   loop do
     choice = gets.chomp.to_i
