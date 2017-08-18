@@ -1,4 +1,4 @@
-# .rubocop.yml for 101 Lessons 2-5 (13 Mar 2017)
+# .rubocop.yml for 101 Lessons 6 (13 Mar 2017)
 
 AllCops:
   # Display cop names
@@ -89,7 +89,7 @@ Style/InlineComment:
 
 Style/MethodCallParentheses:
   Description: Do not use parentheses for method calls with no arguments.
-  Enabled: false
+  Enabled: true
 
 Style/ModuleFunction:
   Description: Checks for usage of `extend self` in modules.
@@ -140,7 +140,18 @@ Style/ParenthesesAroundCondition:
 
 Style/PercentLiteralDelimiters:
   Description: 'Use `%`-literal delimiters consistently'
-  Enabled: false
+  Enabled: true
+  PreferredDelimiters:
+    '%':  ()
+    '%i': '[]'
+    '%I': '[]'
+    '%q': ()
+    '%Q': ()
+    '%r': '{}'
+    '%s': ()
+    '%w': '[]'
+    '%W': '[]'
+    '%x': ()
 
 Style/PerlBackrefs:
   Description: Avoid Perl-style regex back references.
