@@ -1,5 +1,11 @@
 require 'pry'
 
+WINNING_CONDITION = [
+    [1, 2, 3], [4, 5, 6], [7, 8, 9],
+    [1, 4, 7], [2, 5, 8], [3, 6, 9],
+    [1, 5, 9], [3, 5, 7]
+  ]
+
 def display_board(brd)
   puts ""
   puts "     |     |     "
@@ -50,18 +56,21 @@ def player_make_choice(brd)
 end
 
 def computer_make_choice(brd)
-  computer_choice = empty_places(brd).sample
-  brd[computer_choice] = 'O'
+  conditions = WINNING_CONDITION.select do |condition|
+    condition.count('X') == 2 && condition.count(' ') == 1
+  end
+
+  if conditions[0].nil?
+    choice = empty_places(brd).sample
+  else
+    choice = conditions[0].find { |num| brd[num] == ' '}
+  end
+
+  brd[choice] = 'O'
 end
 
 def won?(marker, brd)
-  winning_conditions = [
-    [1, 2, 3], [4, 5, 6], [7, 8, 9],
-    [1, 4, 7], [2, 5, 8], [3, 6, 9],
-    [1, 5, 9], [3, 5, 7]
-  ]
-
-  winning_conditions.any? do |condition|
+  WINNING_CONDITION.any? do |condition|
     condition.all? { |place| brd[place] == marker }
   end
 end
@@ -74,33 +83,40 @@ def winner(brd)
   end
 end
 
-def display_result(winner)
-  case winner
-  when :player
+def display_result(player_score, computer_score)
+  if player_score == 5
     puts "Congrat! The winner is you!"
-  when :computer
+  elsif computer_score == 5
     puts "Opps, computer defeated you!"
-  when nil
-    puts "Ah, it's a tie.."
+  else
+    puts "Player score: #{player_score}; computer score: #{computer_score}"
   end
 end
+
+player_score = 0
+computer_score = 0
 
 loop do
   board = initialize_board
   display_board(board)
 
-  winner = nil
   loop do
     player_make_choice(board)
     computer_make_choice(board)
 
     display_board(board)
     winner = winner(board)
-    break if winner
-    break if empty_places(board).empty?
+
+    if winner == :player
+      player_score += 1
+    elsif winner == :computer
+      computer_score += 1
+    end
+
+    break if winner || empty_places(board).empty?
   end
 
-  display_result(winner)
+  display_result(player_score, computer_score)
   promp("Do you want to play again? (Y/N)")
   answer = gets.chomp.downcase
   break unless answer.start_with?('y')
