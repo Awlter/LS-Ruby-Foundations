@@ -20,12 +20,9 @@ class Move
   end
 
   def >(other_object)
-    if (paper? && other_object.rock? || scissors? && other_object.paper? ||
-       rock? && other_object.scissors?)
-      true
-    else
-      false
-    end
+    (paper? && other_object.rock?) ||
+      (scissors? && other_object.paper?) ||
+      other_object.scissors?
   end
 
   def to_s
@@ -88,8 +85,12 @@ class RPSGame
     puts "Hello, welcome to RPS game."
   end
 
+  def display_moves
+    puts "#{human.name}'s move is #{human.move}" \
+    " #{computer.name}'s move is #{computer.move}"
+  end
+
   def display_winner
-    puts "#{human.name}'s move is #{human.move}, #{computer.name}'s move is #{computer.move}"
     if human.move > computer.move
       puts "#{human.name} won!"
     elsif computer.move > human.move
@@ -118,8 +119,8 @@ class RPSGame
     loop do
       human.choose
       computer.choose
+      display_moves
       display_winner
-
       break unless play_again?
     end
     display_goodbye_message
