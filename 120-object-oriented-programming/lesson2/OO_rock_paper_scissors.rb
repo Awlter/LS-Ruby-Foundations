@@ -81,6 +81,20 @@ class RPSGame
     @computer = Computer.new
   end
 
+  def play
+    display_welcome_message
+    loop do
+      human.choose
+      computer.choose
+      display_moves
+      display_winner
+      break unless play_again?
+    end
+    display_goodbye_message
+  end
+
+  private
+
   def display_welcome_message
     puts "Hello, welcome to RPS game."
   end
@@ -112,18 +126,6 @@ class RPSGame
     else
       false
     end
-  end
-
-  def play
-    display_welcome_message
-    loop do
-      human.choose
-      computer.choose
-      display_moves
-      display_winner
-      break unless play_again?
-    end
-    display_goodbye_message
   end
 end
 
