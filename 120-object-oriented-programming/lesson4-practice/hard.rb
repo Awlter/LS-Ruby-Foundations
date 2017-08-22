@@ -45,8 +45,6 @@ class WheeledVehicle
   def inflate_tire(tire_index, pressure)
     @tires[tire_index] = pressure
   end
-
-
 end
 
 class Auto < WheeledVehicle
@@ -63,9 +61,11 @@ class Motorcycle < WheeledVehicle
   end
 end
 
-class Catamaran
+class Seacraft
   include Movable
+end
 
+class Catamaran
   attr_accessor :propeller_count, :hull_count
 
   def initialize(num_propellers, num_hulls, km_traveled_per_liter, liters_of_fuel_capacity)
