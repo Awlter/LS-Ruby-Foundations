@@ -1,15 +1,14 @@
-require 'pry'
-
 class Board
-  WINNING_LINES = [[1,2,3], [4,5,6], [7,8,9]] +
-                  [[1,4,7], [2,5,8], [3,6,9]] +
-                  [[1,5,9], [3,5,7]]
+  WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] +
+                  [[1, 4, 7], [2, 5, 8], [3, 6, 9]] +
+                  [[1, 5, 9], [3, 5, 7]]
 
   def initialize
     @squares = {}
     (1..9).each { |key| @squares[key] = Square.new }
   end
 
+  # rubocop:disable Metrics/AbcSize
   def draw
     puts "     |     |"
     puts "  #{@squares[1]}  |  #{@squares[2]}  |  #{@squares[3]}"
@@ -89,10 +88,6 @@ class Player
   def initialize(marker)
     @marker = marker
   end
-
-  def mark
-
-  end
 end
 
 class TTTGame
@@ -143,7 +138,7 @@ class TTTGame
     display_board
   end
 
-  def display_board(clear_screen = true)
+  def display_board
     puts "You are a #{human.marker}. Computer is a #{computer.marker}."
     puts ''
     board.draw
