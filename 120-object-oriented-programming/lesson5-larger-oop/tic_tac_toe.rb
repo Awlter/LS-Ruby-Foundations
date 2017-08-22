@@ -10,12 +10,22 @@ class Board
     (1..9).each { |key| @squares[key] = Square.new }
   end
 
-  def get_square_at(key)
-    @squares[key]
+  def draw
+    puts "     |     |"
+    puts "  #{@squares[1]}  |  #{@squares[2]}  |  #{@squares[3]}"
+    puts "     |     |"
+    puts "-----+-----+-----"
+    puts "     |     |"
+    puts "  #{@squares[4]}  |  #{@squares[5]}  |  #{@squares[6]}"
+    puts "     |     |"
+    puts "-----+-----+-----"
+    puts "     |     |"
+    puts "  #{@squares[7]}  |  #{@squares[8]}  |  #{@squares[9]}"
+    puts "     |     |"
   end
 
-  def set_square_at(key, marker)
-    @squares[key] = marker
+  def []=(key, marker)
+    @squares[key].marker = marker
   end
 
   def empty_square_keys
@@ -23,20 +33,13 @@ class Board
   end
 
   def someone_won?
-    !!detect_winner
+    !!winner_marker
   end
 
-  def won?(line, marker)
-    line.all? { |key| @squares[key] == marker }
-  end
-
-  def detect_winner
+  def winner_marker
     WINNING_LINES.each do |line|
-      if won?(line, TTTGame::HUMAN_MARKER)
-        return TTTGame::HUMAN_MARKER
-      elsif won?(line, TTTGame::COMPUTER_MARKER)
-        return  TTTGame::COMPUTER_MARKER
-      end
+      marker = @squares[line[0]].to_s
+      return marker if won?(line, marker)
     end
     nil
   end
@@ -44,21 +47,39 @@ class Board
   def full?
     empty_square_keys.empty?
   end
+
+  private
+
+  def won?(line, marker)
+    line.all? do |key|
+      square = @squares[key]
+      square.marked? && square.marked_by(marker)
+    end
+  end
 end
 
 class Square
   INITIAL_MARKER = ' '
+  attr_writer :marker
 
   def initialize
-    @mark = INITIAL_MARKER
+    @marker = INITIAL_MARKER
   end
 
   def empty?
-    @mark == INITIAL_MARKER
+    @marker == INITIAL_MARKER
+  end
+
+  def marked?
+    !empty?
+  end
+
+  def marked_by(marker)
+    @marker == marker
   end
 
   def to_s
-    @mark
+    @marker
   end
 end
 
@@ -85,6 +106,25 @@ class TTTGame
     @computer = Player.new(COMPUTER_MARKER)
   end
 
+  def play
+    display_welcome_message
+    loop do
+      clear_screen_and_display_board
+      loop do
+        human_moves
+        computer_moves
+        clear_screen_and_display_board
+        break if board.someone_won? || board.full?
+      end
+      display_result
+      break unless play_again?
+      @board = Board.new
+    end
+    display_goodbye_message
+  end
+
+  private
+
   def display_welcome_message
     puts "Welcome to Tic Tac Toe"
     puts ""
@@ -94,20 +134,20 @@ class TTTGame
     puts "Good bye"
   end
 
-  def display_board
+  def clear
     system 'clear'
+  end
+
+  def clear_screen_and_display_board
+    clear
+    display_board
+  end
+
+  def display_board(clear_screen = true)
+    puts "You are a #{human.marker}. Computer is a #{computer.marker}."
     puts ''
-    puts "     |     |"
-    puts "  #{board.get_square_at(1)}  |  #{board.get_square_at(2)}  |  #{board.get_square_at(3)}"
-    puts "     |     |"
-    puts "-----+-----+-----"
-    puts "     |     |"
-    puts "  #{board.get_square_at(4)}  |  #{board.get_square_at(5)}  |  #{board.get_square_at(6)}"
-    puts "     |     |"
-    puts "-----+-----+-----"
-    puts "     |     |"
-    puts "  #{board.get_square_at(7)}  |  #{board.get_square_at(8)}  |  #{board.get_square_at(9)}"
-    puts "     |     |"
+    board.draw
+    puts ''
   end
 
   def human_moves
@@ -119,16 +159,16 @@ class TTTGame
       break if board.empty_square_keys.include? square
       puts "Invalid choice."
     end
-    board.set_square_at(square, human.marker)
+    board[square] = human.marker
   end
 
   def computer_moves
     square = board.empty_square_keys.sample
-    board.set_square_at(square, computer.marker)
+    board[square] = computer.marker
   end
 
   def display_result
-    result = board.detect_winner
+    result = board.winner_marker
     if result == HUMAN_MARKER
       puts 'You won!'
     elsif result == COMPUTER_MARKER
@@ -142,23 +182,6 @@ class TTTGame
     puts 'Want to play again?'
     play_again = gets.chomp.downcase
     play_again.start_with? 'y'
-  end
-
-  def play
-    display_welcome_message
-    loop do
-      display_board
-      loop do
-        human_moves
-        computer_moves
-        display_board
-        break if board.someone_won? || board.full?
-      end
-      display_result
-      break unless play_again?
-      @board = Board.new
-    end
-    display_goodbye_message
   end
 end
 
