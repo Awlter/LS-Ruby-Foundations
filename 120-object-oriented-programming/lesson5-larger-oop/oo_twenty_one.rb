@@ -1,11 +1,6 @@
 require 'pry'
 
 module Hand
-  def initialize(deck)
-    @cards = []
-    @deck = deck
-  end
-
   def hit
     @cards << @deck.deal
   end
@@ -68,7 +63,14 @@ class Card
   end
 end
 
-class Player
+class Participant
+  def initialize(deck)
+    @cards = []
+    @deck = deck
+  end
+end
+
+class Player < Participant
   include Hand
 
   def show_cards
@@ -77,7 +79,7 @@ class Player
   end
 end
 
-class Dealer
+class Dealer < Participant
   include Hand
 
   def show_cards
