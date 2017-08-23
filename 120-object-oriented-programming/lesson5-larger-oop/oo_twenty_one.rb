@@ -64,9 +64,12 @@ class Card
 end
 
 class Participant
-  def initialize(deck)
+  def initialize
     @cards = []
-    @deck = deck
+  end
+
+  def <<(card)
+    @cards << card
   end
 end
 
@@ -95,8 +98,8 @@ end
 class TwentyOneGame
   def initialize
     @deck = Deck.new
-    @player = Player.new(@deck)
-    @dealer = Dealer.new(@deck)
+    @player = Player.new
+    @dealer = Dealer.new
   end
 
   def display_welcome_message
@@ -114,8 +117,8 @@ class TwentyOneGame
   end
 
   def deal
-    @player.hit
-    @dealer.hit
+    @player << @deck.deal
+    @dealer << @deck.deal
   end
 
   def show_cards
